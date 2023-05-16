@@ -1,10 +1,13 @@
 package com.example.datafetcher.service;
+import com.example.datafetcher.model.Owner;
 import com.example.datafetcher.model.StackoverflowData;
 import com.example.datafetcher.model.StackoverflowResponse;
+import com.example.datafetcher.repository.OwnerRepository;
 import com.example.datafetcher.repository.StackoverflowDataRepository;
 import com.example.datafetcher.repository.StackoverflowResponseRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.catalina.connector.Response;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 @Service
@@ -31,6 +35,8 @@ public class StackoverflowService {
     private StackoverflowDataRepository stackoverflowDataRepository;
     @Autowired
     private StackoverflowResponseRepository stackoverflowResponseRepository;
+    @Autowired
+    private OwnerRepository ownerRepository;
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -77,10 +83,24 @@ public class StackoverflowService {
 
     public void saveDataFromJson(String json) {
         try {
-            StackoverflowResponse data = OBJECT_MAPPER.readValue(json, StackoverflowResponse.class);
-            saveJavaQuestions(data);
-        } catch (JsonProcessingException e) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            // 解析JSON数据
+            StackoverflowResponse response = objectMapper.readValue(json, StackoverflowResponse.class);
+
+            // 获取所有的item
+            List<StackoverflowData> items = response.getItems();
+
+            // 遍历每个item并获取owner对象
+            for (StackoverflowData item : items) {
+                Owner owner = item.getOwner();
+                ownerRepository.save(owner);
+                stackoverflowDataRepository.save(item);
+            }
+            stackoverflowResponseRepository.save(response);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }
+
