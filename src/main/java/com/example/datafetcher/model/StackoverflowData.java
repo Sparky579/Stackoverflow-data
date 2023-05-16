@@ -22,6 +22,9 @@ public class StackoverflowData {
     private String link;
     private String title;
     private long closed_date;
+    private long protected_date;
+    private long bounty_amount;
+    private long bounty_closes_date;
     private String closed_reason;
     private int accept_rate;
     private long last_edit_date;
@@ -195,4 +198,27 @@ public class StackoverflowData {
     }
 
 
+    public long getProtected_date() {
+        return protected_date;
+    }
+
+    public void setProtected_date(long protected_date) {
+        this.protected_date = protected_date;
+    }
+
+    public long getBounty_amount() {
+        return bounty_amount;
+    }
+
+    public void setBounty_amount(long bounty_amount) {
+        this.bounty_amount = bounty_amount;
+    }
+
+    public long getBounty_closes_date() {
+        return bounty_closes_date;
+    }
+
+    public void setBounty_closes_date(long bounty_closes_date) {
+        this.bounty_closes_date = bounty_closes_date;
+    }
 }

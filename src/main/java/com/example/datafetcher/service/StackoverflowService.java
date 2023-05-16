@@ -44,7 +44,11 @@ public class StackoverflowService {
         return "https://api.stackexchange.com/2.2/questions?order=" + order + "&sort=" + sort + "&tagged=" + tag + "&site=" + site;
     }
 
-    public String fetchJavaQuestionURL(String url) {
+    String toURL(String tag, String sort, String order, String site, int page, int pageSize) {
+        return "https://api.stackexchange.com/2.2/questions?order=" + order + "&sort=" + sort + "&tagged=" + tag + "&site=" + site + "&page=" + page + "&pagesize=" + pageSize;
+    }
+
+    public String fetchJavaQuestionURL(String url, boolean save) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory(httpClient));
 
@@ -58,7 +62,7 @@ public class StackoverflowService {
         if (response.hasBody()) {
             try {
                 String result = new String(response.getBody(), StandardCharsets.UTF_8);
-                saveDataFromJson(result);
+                if (save) saveDataFromJson(result);
                 return result;
             } catch (Exception e) {
                 throw new RuntimeException("Error processing data", e);
@@ -68,12 +72,35 @@ public class StackoverflowService {
         }
     }
 
+    public String HTTPContent(String content) {
+        try {
+            GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
+            BufferedReader bf = new BufferedReader(new InputStreamReader(gis, StandardCharsets.UTF_8));
+            StringBuilder outStr = new StringBuilder();
+            String line;
+            while ((line = bf.readLine()) != null) {
+                outStr.append(line);
+            }
+            return outStr.toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Error processing data", e);
+        }
+    }
+
+
+
     public String fetchJavaQuestions() {
-        return fetchJavaQuestionURL(toURL("java", "activity", "desc", "stackoverflow"));
+        return fetchJavaQuestionURL(toURL("java", "activity", "desc", "stackoverflow"), false);
     }
 
     public String fetchQuestionsByTag(String tag) {//add page=?
-        return fetchJavaQuestionURL(toURL("java;"+tag, "activity", "desc", "stackoverflow"));
+        return fetchJavaQuestionURL(toURL("java;"+tag, "activity", "desc", "stackoverflow"), false);
+    }
+
+    public void autoFetch(int num) {
+        for (int i = 1; i <= num; i++) {
+            fetchJavaQuestionURL(toURL("java", "activity", "desc", "stackoverflow", i, 50), true);
+        }
     }
 
 
@@ -103,4 +130,3 @@ public class StackoverflowService {
     }
 
 }
-

@@ -23,5 +23,11 @@ public class StackoverflowController {
     public String getQuestionsByTag(@PathVariable String tag) {
         return stackoverflowService.fetchQuestionsByTag(tag);
     }
+
+    @GetMapping("/auto-fetch")
+    public String autoFetch() {
+        stackoverflowService.autoFetch(12);//12 * 50
+        return "Auto fetch completed";
+    }
 }
 
