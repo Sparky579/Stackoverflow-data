@@ -23,7 +23,9 @@ public class Question extends EntityWithOwner{
     @Id
     private int question_id;
     private String content_license;
+    @javax.persistence.Column(length=500)
     private String link;
+    @javax.persistence.Column(length=500)
     private String title;
     private long closed_date;
 
