@@ -1,14 +1,19 @@
 package com.example.datafetcher.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class StackoverflowData {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Answer extends EntityWithOwner{
+    public static Class<AnswerResponse> responseClass = AnswerResponse.class;
+
     @ElementCollection
     private List<String> tags;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "stackoverflowData")
+    @OneToOne
     private Owner owner;
 
     private boolean is_answered;
@@ -29,12 +34,13 @@ public class StackoverflowData {
     private int accept_rate;
     private long last_edit_date;
     private int accepted_answer_id;
+    private long community_owned_date;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
 
-    public StackoverflowData(List<String> tags, Owner owner, boolean is_answered, int view_count, int answer_count, int score, long last_activity_date, long creation_date, int question_id, String content_license, String link, String title) {
+    public Answer(List<String> tags, Owner owner, boolean is_answered, int view_count, int answer_count, int score, long last_activity_date, long creation_date, int question_id, String content_license, String link, String title) {
         this.tags = tags;
         this.owner = owner;
         this.is_answered = is_answered;
@@ -49,7 +55,7 @@ public class StackoverflowData {
         this.title = title;
     }
 
-    public StackoverflowData() {
+    public Answer() {
 
     }
 
@@ -220,5 +226,13 @@ public class StackoverflowData {
 
     public void setBounty_closes_date(long bounty_closes_date) {
         this.bounty_closes_date = bounty_closes_date;
+    }
+
+    public long getCommunity_owned_date() {
+        return community_owned_date;
+    }
+
+    public void setCommunity_owned_date(long community_owned_date) {
+        this.community_owned_date = community_owned_date;
     }
 }

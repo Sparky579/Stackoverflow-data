@@ -14,19 +14,25 @@ public class StackoverflowController {
         this.stackoverflowService = stackoverflowService;
     }
 
-    @GetMapping("/java-questions")
-    public String getJavaQuestions() {
-        return stackoverflowService.fetchJavaQuestions();
+    @GetMapping("/java-answers")
+    public String getJavaAnswers() {
+        return stackoverflowService.fetchJavaAnswers();
     }
 
-    @GetMapping("/{tag}-questions")
-    public String getQuestionsByTag(@PathVariable String tag) {
-        return stackoverflowService.fetchQuestionsByTag(tag);
+    @GetMapping("/{tag}-answers")
+    public String getAnswersByTag(@PathVariable String tag) {
+        return stackoverflowService.fetchJavaAnswersByTag(tag);
     }
 
-    @GetMapping("/auto-fetch")
-    public String autoFetch() {
-        stackoverflowService.autoFetch(12);//12 * 50
+    @GetMapping("/auto-fetch-1")
+    public String autoFetch1() {
+        stackoverflowService.autoFetchAnswer(1, 50);//12 * 50
+        return "Auto fetch completed";
+    }
+
+    @GetMapping("/auto-fetch-2")
+    public String autoFetch2() {
+        stackoverflowService.autoFetchQuestion(1, 50);
         return "Auto fetch completed";
     }
 }

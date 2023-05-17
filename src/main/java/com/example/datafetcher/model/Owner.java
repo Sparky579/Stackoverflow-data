@@ -28,18 +28,6 @@ public class Owner {
     public Owner() {
     }
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    private StackoverflowData stackoverflowData;
-
-    public StackoverflowData getStackoverflowData() {
-        return stackoverflowData;
-    }
-
-    public void setStackoverflowData(StackoverflowData stackoverflowData) {
-        this.stackoverflowData = stackoverflowData;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }

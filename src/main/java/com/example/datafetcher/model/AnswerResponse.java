@@ -7,9 +7,9 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
-public class StackoverflowResponse {
+public class AnswerResponse extends Response{
     @OneToMany
-    private List<StackoverflowData> items;
+    private List<Answer> items;
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Long id;
@@ -17,11 +17,11 @@ public class StackoverflowResponse {
     private int quota_max;
     private int quota_remaining;
 
-    public List<StackoverflowData> getItems() {
+    public List<Answer> getItems() {
         return items;
     }
 
-    public void setItems(List<StackoverflowData> items) {
+    public void setItems(List<Answer> items) {
         this.items = items;
     }
 
