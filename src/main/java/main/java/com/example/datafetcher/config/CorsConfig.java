@@ -1,4 +1,4 @@
-package com.example.datafetcher.config;
+package main.java.com.example.datafetcher.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -35,5 +35,12 @@ public class StackoverflowController {
         stackoverflowService.autoFetchQuestion(1, 50);
         return "Auto fetch completed";
     }
+
+    @GetMapping("/auto-fetch")
+    public String autoFetch() {
+        stackoverflowService.autoFetch();
+        return stackoverflowService.HTTPContent("Fetch complete");
+    }
+
 }
 

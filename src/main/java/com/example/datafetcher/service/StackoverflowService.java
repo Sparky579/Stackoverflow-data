@@ -1,11 +1,16 @@
 package com.example.datafetcher.service;
-import com.example.datafetcher.model.*;
-import com.example.datafetcher.repository.*;
+import com.example.datafetcher.model.Owner;
+import com.example.datafetcher.model.StackoverflowData;
+import com.example.datafetcher.model.StackoverflowResponse;
+import com.example.datafetcher.repository.OwnerRepository;
+import com.example.datafetcher.repository.StackoverflowDataRepository;
+import com.example.datafetcher.repository.StackoverflowResponseRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.catalina.connector.Response;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,7 +24,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
 @Service
@@ -28,39 +32,23 @@ public class StackoverflowService {
     private static final String STACKOVERFLOW_API_URL = "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity&tagged=java&site=stackoverflow";
 
     @Autowired
-    private AnswerRepository answerRepository;
+    private StackoverflowDataRepository stackoverflowDataRepository;
     @Autowired
-    private AnswerResponseRepository answerResponseRepository;
+    private StackoverflowResponseRepository stackoverflowResponseRepository;
     @Autowired
     private OwnerRepository ownerRepository;
-    @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
-    private QuestionResponseRepository questionResponseRepository;
-
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    String toAnswerURL(String tag, String sort, String order, String site) {
+    String toURL(String tag, String sort, String order, String site) {
         return "https://api.stackexchange.com/2.2/questions?order=" + order + "&sort=" + sort + "&tagged=" + tag + "&site=" + site;
     }
 
-    String toAnswerURL(String tag, String sort, String order, String site, int page, int pageSize) {
+    String toURL(String tag, String sort, String order, String site, int page, int pageSize) {
         return "https://api.stackexchange.com/2.2/questions?order=" + order + "&sort=" + sort + "&tagged=" + tag + "&site=" + site + "&page=" + page + "&pagesize=" + pageSize;
     }
 
-    String toQuestionURL(String tag, String sort, String order, String site) {
-        return "https://api.stackexchange.com/2.2/questions?order=" + order + "&sort=" + sort + "&tagged=" + tag + "&site=" + site;
-    }
-    String toQuestionURL(String tag, String sort, String order, String site, int page, int pageSize) {
-        return "https://api.stackexchange.com/2.2/questions?order=" + order + "&sort=" + sort + "&tagged=" + tag + "&site=" + site + "&page=" + page + "&pagesize=" + pageSize;
-    }
-
-    String toQuestionAnswerURL(String questionID, String sort, String order, String site, int page, int pageSize) {
-        return "https://api.stackexchange.com/2.2/questions/" + questionID + "/answers?order=" + order + "&sort=" + sort + "&site=" + site + "&page=" + page + "&pagesize=" + pageSize;
-    }
-
-    public String fetchJavaAnswersURLJson(String url) {
+    public String fetchJavaQuestionURL(String url, boolean save) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory(httpClient));
 
@@ -74,7 +62,8 @@ public class StackoverflowService {
         if (response.hasBody()) {
             try {
                 String result = new String(response.getBody(), StandardCharsets.UTF_8);
-            return result;
+                if (save) saveDataFromJson(result);
+                return result;
             } catch (Exception e) {
                 throw new RuntimeException("Error processing data", e);
             }
@@ -82,7 +71,6 @@ public class StackoverflowService {
             throw new RuntimeException("No data received from StackOverflow API");
         }
     }
-
 
     public String HTTPContent(String content) {
         try {
@@ -101,71 +89,42 @@ public class StackoverflowService {
 
 
 
-    public String fetchJavaAnswers() {
-        return fetchJavaAnswersURLJson(toAnswerURL("java", "activity", "desc", "stackoverflow"));
+    public String fetchJavaQuestions() {
+        return fetchJavaQuestionURL(toURL("java", "activity", "desc", "stackoverflow"), false);
     }
 
-    public String fetchJavaAnswersByTag(String tag) {//add page=?
-        return fetchJavaAnswersURLJson(toAnswerURL("java;"+tag, "activity", "desc", "stackoverflow"));
+    public String fetchQuestionsByTag(String tag) {//add page=?
+        return fetchJavaQuestionURL(toURL("java;"+tag, "activity", "desc", "stackoverflow"), false);
     }
 
-
-
-    public void autoFetchAnswer(int num, int pageSize) {
-        for (int i = 1; i <= num; i++) {
-            String answerJson = fetchJavaAnswersURLJson(toAnswerURL("java", "activity", "desc", "stackoverflow", i, pageSize));
-            Tools.saveAnswerResponse(answerJson, answerRepository, answerResponseRepository, ownerRepository);
-        }
-    }
-
-    public void autoFetchQuestion(int num, int pageSize) {
-        for (int i = 1; i <= num; i++) {
-            String questionJson = fetchJavaAnswersURLJson(toQuestionURL("java", "activity", "desc", "stackoverflow", i, pageSize));
-            Tools.saveQuestionResponse(questionJson, questionRepository, questionResponseRepository, ownerRepository);
-            QuestionResponse questionResponse = Tools.parseJson(questionJson, QuestionResponse.class);
-            for (Question question : questionResponse.getItems()) {
-                if (question.isIs_answered()) {
-                    autoFetchAnswerByQuestionID(question.getQuestion_id());
-                }
-            }
-        }
-    }
-
-    public void autoFetchAnswerByQuestionID(int id) {
-        int i = 0;
-        while (true) {
-            i++;
-            String answerJson = fetchJavaAnswersURLJson(toQuestionAnswerURL(String.valueOf(id), "activity", "desc", "stackoverflow", i, 50));
-            AnswerResponse answerResponse = Tools.parseJson(answerJson, AnswerResponse.class);
-            Tools.saveAnswerResponse(answerJson, answerRepository, answerResponseRepository, ownerRepository);
-            if (!answerResponse.isHas_more()) break;
-        }
+    public void autoFetch() {
+        throw new RuntimeException();
+//        for (int i = 1; i <= 10; i++) {
+//            fetchJavaQuestionURL(toURL("java", "activity", "desc", "stackoverflow", i, 50), true);
+//        }
     }
 
 
-    public void saveJavaQuestions(AnswerResponse data) {
-        answerRepository.saveAll(data.getItems());
-        answerResponseRepository.save(data);
+    public void saveJavaQuestions(StackoverflowResponse data) {
+        stackoverflowResponseRepository.save(data);
     }
 
-    @Deprecated
-    public void saveDataFromJson(String json,
-                                 Class<? extends Response> responseClass,
-                                 Class<? extends EntityWithOwner> itemClass,
-                                 JpaRepository<? extends EntityWithOwner, Long> itemRepository) {
+    public void saveDataFromJson(String json) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             // 解析JSON数据
-            Response response = objectMapper.readValue(json, responseClass);
+            StackoverflowResponse response = objectMapper.readValue(json, StackoverflowResponse.class);
 
             // 获取所有的item
-            List<? extends EntityWithOwner> items = response.getItems();
+            List<StackoverflowData> items = response.getItems();
 
             // 遍历每个item并获取owner对象
-            for (EntityWithOwner item : items) {
+            for (StackoverflowData item : items) {
                 Owner owner = item.getOwner();
                 ownerRepository.save(owner);
+                stackoverflowDataRepository.save(item);
             }
+            stackoverflowResponseRepository.save(response);
         } catch (Exception e) {
             e.printStackTrace();
         }
