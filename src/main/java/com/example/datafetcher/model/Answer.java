@@ -18,7 +18,6 @@ public class Answer extends EntityWithOwner{
 
     private boolean is_answered;
     private int view_count;
-    private int answer_count;
     private int score;
     private long last_activity_date;
     private long creation_date;
@@ -26,34 +25,14 @@ public class Answer extends EntityWithOwner{
     private String content_license;
     private String link;
     private String title;
-    private long closed_date;
-    private long protected_date;
-    private long bounty_amount;
-    private long bounty_closes_date;
     private String closed_reason;
     private int accept_rate;
     private long last_edit_date;
-    private int accepted_answer_id;
-    private long community_owned_date;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private Long id;
+    private int id;
 
-    public Answer(List<String> tags, Owner owner, boolean is_answered, int view_count, int answer_count, int score, long last_activity_date, long creation_date, int question_id, String content_license, String link, String title) {
-        this.tags = tags;
-        this.owner = owner;
-        this.is_answered = is_answered;
-        this.view_count = view_count;
-        this.answer_count = answer_count;
-        this.score = score;
-        this.last_activity_date = last_activity_date;
-        this.creation_date = creation_date;
-        this.question_id = question_id;
-        this.content_license = content_license;
-        this.link = link;
-        this.title = title;
-    }
 
     public Answer() {
 
@@ -91,13 +70,6 @@ public class Answer extends EntityWithOwner{
         this.view_count = view_count;
     }
 
-    public int getAnswer_count() {
-        return answer_count;
-    }
-
-    public void setAnswer_count(int answer_count) {
-        this.answer_count = answer_count;
-    }
 
     public int getScore() {
         return score;
@@ -155,21 +127,14 @@ public class Answer extends EntityWithOwner{
         this.title = title;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public long getClosed_date() {
-        return closed_date;
-    }
-
-    public void setClosed_date(long closed_date) {
-        this.closed_date = closed_date;
-    }
 
     public String getClosed_reason() {
         return closed_reason;
@@ -195,44 +160,5 @@ public class Answer extends EntityWithOwner{
         this.last_edit_date = last_edit_date;
     }
 
-    public int getAccepted_answer_id() {
-        return accepted_answer_id;
-    }
 
-    public void setAccepted_answer_id(int accepted_answer_id) {
-        this.accepted_answer_id = accepted_answer_id;
-    }
-
-
-    public long getProtected_date() {
-        return protected_date;
-    }
-
-    public void setProtected_date(long protected_date) {
-        this.protected_date = protected_date;
-    }
-
-    public long getBounty_amount() {
-        return bounty_amount;
-    }
-
-    public void setBounty_amount(long bounty_amount) {
-        this.bounty_amount = bounty_amount;
-    }
-
-    public long getBounty_closes_date() {
-        return bounty_closes_date;
-    }
-
-    public void setBounty_closes_date(long bounty_closes_date) {
-        this.bounty_closes_date = bounty_closes_date;
-    }
-
-    public long getCommunity_owned_date() {
-        return community_owned_date;
-    }
-
-    public void setCommunity_owned_date(long community_owned_date) {
-        this.community_owned_date = community_owned_date;
-    }
 }

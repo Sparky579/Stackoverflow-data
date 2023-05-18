@@ -19,4 +19,11 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT e.answer_count, COUNT(e.answer_count) FROM Question e GROUP BY e.answer_count")
     List<Object[]> findAnswerCountDistribution();
 
+    @Query("SELECT COUNT(q) FROM Question q WHERE q.accepted_answer_id > 0")
+    Integer findAcceptedAnswerCount();
+
+
+    @Query("SELECT COUNT(q) FROM Question q")
+    Integer findTotalQuestionCount();
+
 }
