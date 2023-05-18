@@ -6,9 +6,7 @@ import com.example.datafetcher.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class QuestionAnswerService {
@@ -44,5 +42,17 @@ public class QuestionAnswerService {
 
     public int getZero(){
         return  questionRepository.findZeroCount();
+    }
+
+
+    public Map<Integer,Integer> getDistribution(){
+        List<Object[]> temp=questionRepository.findAnswerCountDistribution();
+        Map<Integer, Integer> statisticsMap = new HashMap<>();
+        for (Object[] result : temp) {
+            Integer fieldValue = (Integer) result[0];
+            Long count = (Long) result[1];
+            statisticsMap.put(fieldValue, count.intValue());
+        }
+        return statisticsMap;
     }
 }

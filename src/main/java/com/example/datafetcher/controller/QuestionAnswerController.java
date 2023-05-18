@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/java/question/answer_count")
@@ -37,6 +38,11 @@ public class QuestionAnswerController {
     @GetMapping("/zero")
     public int getZero() {
         return questionAnswerService.getZero();
+    }
+
+    @GetMapping("/distribution")
+    public Map<Integer,Integer> getDistribution() {
+        return questionAnswerService.getDistribution();
     }
 
 
