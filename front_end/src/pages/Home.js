@@ -3,6 +3,19 @@ import axios from "axios";
 import { Link } from 'react-router-dom';
 import ChartComponent from '../componentes/ChartComponent';
 import QustionAnswerChart from '../componentes/QuestionAnswerChart'
+import AnswerDistributionChart from "../componentes/AnswerDistributionChart"
+
+async function fetchDistribution() {
+  try {
+    const response = await axios.get('http://localhost:8080/java/question/answer_count/distribution');
+    const data = response.data;
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
 
 async function fetchData() {
   try {
@@ -60,6 +73,7 @@ export default class Home extends Component {
       data: [],
       max:0,
       zero:0,
+      distribution:Object,
     };
   }
 
@@ -71,8 +85,10 @@ export default class Home extends Component {
       const fetchedAverage = await fetchAverage();
       const fetchedData = await fetchData();
       const fetchedMax = await fetchMax();
+      const fetchedDistribution = await fetchDistribution();
+      console.log("xx",fetchedDistribution);
 
-      this.setState({max: fetchedMax, average: fetchedAverage ,data: fetchedData ,zero: fetchedZero });
+      this.setState({max: fetchedMax, average: fetchedAverage ,data: fetchedData ,zero: fetchedZero,distribution: fetchedDistribution });
       
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -86,7 +102,8 @@ export default class Home extends Component {
 
 
   render() {
-    const { data ,average,max,zero} = this.state;
+    const { data ,average,max,zero,distribution} = this.state;
+
     const contentstyle = {
       margin: "auto",
       width: "80%"
@@ -101,7 +118,8 @@ export default class Home extends Component {
       <ChartComponent has={data.length-zero} nhas={zero}/>
       <h3>展示 answer 分布、平均值以及最大值:</h3>
      <QustionAnswerChart data={data} average={average} max={max}/>
-
+     <h3>展示 answer_count 统计值:</h3>
+     <AnswerDistributionChart data={distribution}/>
     </section>
 
     )
