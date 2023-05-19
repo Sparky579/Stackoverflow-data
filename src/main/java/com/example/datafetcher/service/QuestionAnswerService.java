@@ -118,32 +118,35 @@ public class QuestionAnswerService {
         }
         return result;
     }
-    public Map<String, Integer> getTagVote() {
+    public Map<String, Integer> getTagCombinationVote() {
         List<Question> questions = questionRepository.findAll();
 
         return questions.stream()
-                .flatMap(question -> question.getTags().stream())
                 .collect(Collectors.groupingBy(
-                        tag -> tag,
-                        Collectors.summingInt(tag -> questions.stream()
-                                .filter(question -> question.getTags().contains(tag))
-                                .mapToInt(Question::getScore)
-                                .sum()
-                        )
+                        question -> {
+                            List<String> sortedTags = question.getTags().stream()
+                                    .sorted()
+                                    .collect(Collectors.toList());
+                            return String.join(",", sortedTags);
+                        },
+                        Collectors.summingInt(Question::getScore)
                 ));
     }
+
+
+
     public Map<String, Integer> getTagView() {
         List<Question> questions = questionRepository.findAll();
 
         return questions.stream()
-                .flatMap(question -> question.getTags().stream())
                 .collect(Collectors.groupingBy(
-                        tag -> tag,
-                        Collectors.summingInt(tag -> questions.stream()
-                                .filter(question -> question.getTags().contains(tag))
-                                .mapToInt(Question::getView_count)
-                                .sum()
-                        )
+                        question -> {
+                            List<String> sortedTags = question.getTags().stream()
+                                    .sorted()
+                                    .collect(Collectors.toList());
+                            return String.join(",", sortedTags);
+                        },
+                        Collectors.summingInt(Question::getView_count)
                 ));
     }
     public List<Integer> getQuestionAnswerCount() {
