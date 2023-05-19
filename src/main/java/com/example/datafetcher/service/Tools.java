@@ -1,10 +1,7 @@
 package com.example.datafetcher.service;
 
 import com.example.datafetcher.model.*;
-import com.example.datafetcher.repository.AnswerRepository;
-import com.example.datafetcher.repository.AnswerResponseRepository;
-import com.example.datafetcher.repository.QuestionRepository;
-import com.example.datafetcher.repository.QuestionResponseRepository;
+import com.example.datafetcher.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -44,7 +41,6 @@ public class Tools {
             ownerRepository.save(owner);
             answerRepository.save(item);
         }
-        answerResponseRepository.save(answerResponse);
     }
 
     static void saveQuestionResponse(String json,
@@ -59,6 +55,18 @@ public class Tools {
             questionRepository.save(item);
         }
         questionResponseRepository.save(questionResponse);
+    }
+
+    static void setCommentResponse(String json,
+                                   CommentRepository commentRepository,
+                                   JpaRepository<Owner, Long> ownerRepository) {
+        CommentResponse commentResponse = parseJson(json, CommentResponse.class);
+        List<Comment> items = commentResponse.getItems();
+        for (Comment item : items) {
+            Owner owner = item.getOwner();
+            ownerRepository.save(owner);
+            commentRepository.save(item);
+        }
     }
 
 

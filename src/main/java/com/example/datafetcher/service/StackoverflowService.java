@@ -30,6 +30,8 @@ public class StackoverflowService {
     @Autowired
     private AnswerRepository answerRepository;
     @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
     private AnswerResponseRepository answerResponseRepository;
     @Autowired
     private OwnerRepository ownerRepository;
@@ -150,9 +152,9 @@ public class StackoverflowService {
         int i = 0;
         while (true) {
             i++;
-            String commentJson = fetchJavaAnswersURLJson(toQuestionAnswerURL(String.valueOf(id), "activity", "desc", "stackoverflow", i, 50));
+            String commentJson = fetchJavaAnswersURLJson(toQuestionCommentURL(String.valueOf(id), "creation", "desc", "stackoverflow", i, 50));
             CommentResponse answerResponse = Tools.parseJson(commentJson, CommentResponse.class);
-            Tools.saveAnswerResponse(commentJson, answerRepository, answerResponseRepository, ownerRepository);
+            Tools.setCommentResponse(commentJson, commentRepository, ownerRepository);
             if (!answerResponse.isHas_more()) break;
         }
     }

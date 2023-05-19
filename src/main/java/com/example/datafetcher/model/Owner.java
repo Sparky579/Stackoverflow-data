@@ -8,11 +8,9 @@ import javax.persistence.*;
 @Entity
 public class Owner {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private int reputation;
+    @Id
     @JsonProperty("user_id")
     private int userId;
     @JsonProperty("user_type")
@@ -28,13 +26,6 @@ public class Owner {
     public Owner() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
 
     public int getReputation() {
         return reputation;

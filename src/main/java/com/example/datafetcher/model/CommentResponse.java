@@ -1,10 +1,12 @@
 package com.example.datafetcher.model;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+@Entity
 public class CommentResponse extends Response{
     @OneToMany
     private List<Comment> items;
