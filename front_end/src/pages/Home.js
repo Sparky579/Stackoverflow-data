@@ -86,7 +86,7 @@ export default class Home extends Component {
       const fetchedData = await fetchData();
       const fetchedMax = await fetchMax();
       const fetchedDistribution = await fetchDistribution();
-      console.log("xx",fetchedDistribution);
+   
 
       this.setState({max: fetchedMax, average: fetchedAverage ,data: fetchedData ,zero: fetchedZero,distribution: fetchedDistribution });
       
@@ -104,13 +104,7 @@ export default class Home extends Component {
   render() {
     const { data ,average,max,zero,distribution} = this.state;
 
-    const contentstyle = {
-      margin: "auto",
-      width: "80%"
-    }
-    const noticestyle = {
-      borderBottom: "2px solid #D3D3D3"
-    }
+
 
     return (
     <section>

@@ -9,6 +9,9 @@ import {
 
 import Home from "./pages/Home.js";
 import "./App.css"
+import AcceptedAnswers from "./pages/AcceptedAnswers.js";
+import Tags from "./pages/Tags"
+import User from "./pages/User"
 
 const { Header, Content, Footer } = Layout;
 
@@ -19,7 +22,10 @@ const App = () => {
         <Header>
           <div className="logo" />
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="1"><Link to="/">首页</Link></Menu.Item>
+            <Menu.Item key="1"><Link to="/">Number of Answers</Link></Menu.Item>
+            <Menu.Item key="2"><Link to="/accept_answer">Accepted Answers</Link></Menu.Item>
+            <Menu.Item key="3"><Link to="/tags">Tags</Link></Menu.Item>
+            <Menu.Item key="4"><Link to="/user">User</Link></Menu.Item>
           </Menu>
         </Header>
         <Content style={{ padding: "0 50px" }}>
@@ -27,6 +33,15 @@ const App = () => {
             <Switch>
               <Route exact path="/">
                 <Home/>
+              </Route>
+              <Route exact path="/accept_answer">
+                <AcceptedAnswers/>
+              </Route>
+              <Route exact path="/tags">
+                <Tags/>
+              </Route>
+              <Route exact path="/user">
+                <User/>
               </Route>
             </Switch>
           </div>
