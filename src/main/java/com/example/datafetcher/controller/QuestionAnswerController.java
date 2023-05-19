@@ -2,6 +2,7 @@ package com.example.datafetcher.controller;
 
 import com.example.datafetcher.DTO.QuestionAnswer;
 import com.example.datafetcher.model.Question;
+import com.example.datafetcher.service.AcceptAnswerService;
 import com.example.datafetcher.service.QuestionAnswerService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/java/question/answer_count")
 public class QuestionAnswerController {
     private final QuestionAnswerService questionAnswerService;
+    private final AcceptAnswerService acceptAnswerService;
 
-    public QuestionAnswerController(QuestionAnswerService questionAnswerService) {
+    public QuestionAnswerController(QuestionAnswerService questionAnswerService,AcceptAnswerService acceptAnswerService) {
         this.questionAnswerService = questionAnswerService;
+        this.acceptAnswerService=acceptAnswerService;
     }
 
     @GetMapping("/all")
@@ -48,15 +51,6 @@ public class QuestionAnswerController {
         return questionAnswerService.getDistribution();
     }
 
-    @GetMapping("/accept-rate")
-    public double findAcceptedAnswerPercentage() {
-        return questionAnswerService.findAcceptedAnswerPercentage();
-    }
-
-    @GetMapping("/accept-interval")
-    public String findAcceptInterval() {
-        return questionAnswerService.findAcceptInterval().toString();
-    }
 
 
 }
