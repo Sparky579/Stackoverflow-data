@@ -36,11 +36,6 @@ public class StackoverflowController {
         return "Auto fetch completed";
     }
 
-    @GetMapping("/auto-fetch")
-    public String autoFetch() {
-        stackoverflowService.autoFetch();
-        return stackoverflowService.HTTPContent("Fetch complete");
-    }
 
 }
 
