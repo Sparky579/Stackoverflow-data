@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
-import { hasInjectionContext } from '@vue/runtime-core';
+
 
 const AcceptedLessVotePercentageChart = ({more}) => {
   const chartRef = useRef(null);
