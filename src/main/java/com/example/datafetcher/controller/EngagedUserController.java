@@ -27,6 +27,10 @@ public class EngagedUserController {
     public List<Integer> getQuestionCommentCount() {
         return engagedUserService.getQuestionCommentCount();
     }
+    @GetMapping("/merge-count")
+    public List<Integer> mergeCounts() {
+        return engagedUserService.getQuestionMergeCount();
+    }
 
     @GetMapping("/answer/count")
     public List<Integer> getQuestionAnswerCount() {

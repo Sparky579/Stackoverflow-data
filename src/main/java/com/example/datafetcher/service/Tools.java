@@ -59,11 +59,13 @@ public class Tools {
 
     static void setCommentResponse(String json,
                                    CommentRepository commentRepository,
-                                   JpaRepository<Owner, Long> ownerRepository) {
+                                   JpaRepository<Owner, Long> ownerRepository,
+                                   int questionId) {
         CommentResponse commentResponse = parseJson(json, CommentResponse.class);
         List<Comment> items = commentResponse.getItems();
         for (Comment item : items) {
             Owner owner = item.getOwner();
+            item.setQuestion_id(questionId);
             ownerRepository.save(owner);
             commentRepository.save(item);
         }

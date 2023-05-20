@@ -19,6 +19,7 @@ public class Comment extends EntityWithOwner {
     private long creation_date;
     private int post_id;
     private String content_license;
+    private int question_id;
 
 
     @Id
@@ -80,5 +81,13 @@ public class Comment extends EntityWithOwner {
 
     public void setContent_license(String content_license) {
         this.content_license = content_license;
+    }
+
+    public int getQuestion_id() {
+        return question_id;
+    }
+
+    public void setQuestion_id(int question_id) {
+        this.question_id = question_id;
     }
 }

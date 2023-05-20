@@ -34,6 +34,12 @@ public class EngagedUserService {
         return questions.stream().map(question -> commentRepository
                 .findAnswersByQuestionId(question.getQuestion_id()).size()).toList();
     }
+    public List<Integer> getQuestionMergeCount() {
+        List<Question> questions = questionRepository.findAll();
+        return questions.stream().map(question -> commentRepository
+                .findAnswersByQuestionId(question.getQuestion_id()).size()+answerRepository
+                .findAnswersByQuestionId(question.getQuestion_id()).size()).toList();
+    }
     public Map<Integer, Integer> getUserAnswerCount() {
         List<Answer> answers = answerRepository.findAll();
 
@@ -61,6 +67,7 @@ public class EngagedUserService {
     public Map<Integer, Integer> mergeUserCounts(Map<Integer, Integer> answerCountMap, Map<Integer, Integer> commentCountMap) {
        return  Stream.of(answerCountMap, commentCountMap)
                 .flatMap(map -> map.entrySet().stream())
+               .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,

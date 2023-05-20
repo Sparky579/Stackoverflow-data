@@ -154,7 +154,7 @@ public class StackoverflowService {
             i++;
             String commentJson = fetchJavaAnswersURLJson(toQuestionCommentURL(String.valueOf(id), "creation", "desc", "stackoverflow", i, 50));
             CommentResponse answerResponse = Tools.parseJson(commentJson, CommentResponse.class);
-            Tools.setCommentResponse(commentJson, commentRepository, ownerRepository);
+            Tools.setCommentResponse(commentJson, commentRepository, ownerRepository, id);
             if (!answerResponse.isHas_more()) break;
         }
     }
