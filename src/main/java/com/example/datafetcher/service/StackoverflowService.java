@@ -39,6 +39,8 @@ public class StackoverflowService {
     private QuestionRepository questionRepository;
     @Autowired
     private QuestionResponseRepository questionResponseRepository;
+    @Autowired
+    private APIsRepository apisRepository;
 
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -55,7 +57,7 @@ public class StackoverflowService {
         return "https://api.stackexchange.com/2.2/questions?order=" + order + "&sort=" + sort + "&tagged=" + tag + "&site=" + site;
     }
     String toQuestionURL(String tag, String sort, String order, String site, int page, int pageSize) {
-        return "https://api.stackexchange.com/2.2/questions?order=" + order + "&sort=" + sort + "&tagged=" + tag + "&site=" + site + "&page=" + page + "&pagesize=" + pageSize;
+        return "https://api.stackexchange.com/2.2/questions?order=" + order + "&sort=" + sort + "&tagged=" + tag + "&site=" + site + "&page=" + page + "&pagesize=" + pageSize + "&filter=withbody";
     }
 
     String toQuestionAnswerURL(String questionID, String sort, String order, String site, int page, int pageSize) {
@@ -126,6 +128,9 @@ public class StackoverflowService {
     public void autoFetchQuestion(int num, int pageSize) {
         for (int i = 1; i <= num; i++) {
             String questionJson = fetchJavaAnswersURLJson(toQuestionURL("java", "activity", "desc", "stackoverflow", i, pageSize));
+            APIService apiService = new APIService();
+            APIService.apisRepository = apisRepository;
+            apiService.extractAndCountAPIs(questionJson);
             Tools.saveQuestionResponse(questionJson, questionRepository, questionResponseRepository, ownerRepository);
             QuestionResponse questionResponse = Tools.parseJson(questionJson, QuestionResponse.class);
             for (Question question : questionResponse.getItems()) {

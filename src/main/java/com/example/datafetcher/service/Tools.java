@@ -51,7 +51,7 @@ public class Tools {
         List<Question> items = questionResponse.getItems();
         for (Question item : items) {
             Owner owner = item.getOwner();
-            ownerRepository.save(owner);
+            if (owner != null)  ownerRepository.save(owner);
             questionRepository.save(item);
         }
         questionResponseRepository.save(questionResponse);

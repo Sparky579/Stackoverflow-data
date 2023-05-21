@@ -1,5 +1,7 @@
 package com.example.datafetcher.controller;
 
+import com.example.datafetcher.repository.APIsRepository;
+import com.example.datafetcher.service.APIService;
 import com.example.datafetcher.service.EngagedUserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +15,11 @@ import java.util.Map;
 public class EngagedUserController {
 
     private final EngagedUserService engagedUserService;
+    private final APIService apiService;
 
-    public EngagedUserController(EngagedUserService engagedUserService) {
+    public EngagedUserController(EngagedUserService engagedUserService, APIService apisRepository) {
         this.engagedUserService = engagedUserService;
+        this.apiService = apisRepository;
     }
 
     @GetMapping("/user/answer/count")
@@ -47,6 +51,10 @@ public class EngagedUserController {
         return engagedUserService.mergeUserCounts(getUserAnswerCount(),getUserCommentCount());
     }
 
+    @GetMapping("/api-distribution")
+    public Map<String, Integer> getApiDistribution() {
+        return apiService.getAPIsCountMap();
+    }
 
 
 

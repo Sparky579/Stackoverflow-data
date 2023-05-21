@@ -200,4 +200,5 @@ public class Question extends EntityWithOwner{
     public void setCommunity_owned_date(long community_owned_date) {
         this.community_owned_date = community_owned_date;
     }
+
 }
