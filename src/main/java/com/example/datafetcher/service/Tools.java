@@ -33,14 +33,15 @@ public class Tools {
     public static void saveAnswerResponse(String json,
                             AnswerRepository answerRepository,
                             AnswerResponseRepository answerResponseRepository,
-                            JpaRepository<Owner, Long> ownerRepository) {
+                            OwnerRepository ownerRepository) {
         AnswerResponse answerResponse = parseJson(json, AnswerResponse.class);
         List<Answer> items = answerResponse.getItems();
         for (Answer item : items) {
             Owner owner = item.getOwner();
-            if (ownerRepository.existsById((long) owner.getUserId())){
-                ownerRepository.save(owner);
+            if (ownerRepository.existsByUserId(owner.getUserId())){
+                item.setOwner(ownerRepository.findByUserId(owner.getUserId()).get(0));
             }
+            else ownerRepository.save(owner);
             answerRepository.save(item);
         }
     }
@@ -48,12 +49,13 @@ public class Tools {
     static void saveQuestionResponse(String json,
                               QuestionRepository questionRepository,
                               QuestionResponseRepository questionResponseRepository,
-                              JpaRepository<Owner, Long> ownerRepository) {
+                              OwnerRepository ownerRepository) {
         QuestionResponse questionResponse = parseJson(json, QuestionResponse.class);
         List<Question> items = questionResponse.getItems();
         for (Question item : items) {
             Owner owner = item.getOwner();
-            if (owner != null)  ownerRepository.save(owner);
+            if (owner != null && !ownerRepository.existsByUserId(owner.getUserId()))
+                ownerRepository.save(owner);
             questionRepository.save(item);
         }
         questionResponseRepository.save(questionResponse);
@@ -61,14 +63,14 @@ public class Tools {
 
     static void setCommentResponse(String json,
                                    CommentRepository commentRepository,
-                                   JpaRepository<Owner, Long> ownerRepository,
+                                   OwnerRepository ownerRepository,
                                    int questionId) {
         CommentResponse commentResponse = parseJson(json, CommentResponse.class);
         List<Comment> items = commentResponse.getItems();
         for (Comment item : items) {
             Owner owner = item.getOwner();
             item.setQuestion_id(questionId);
-            if (ownerRepository.existsById((long) owner.getUserId())){
+            if (!ownerRepository.existsByUserId((owner.getUserId()))){
                 ownerRepository.save(owner);
             }
             commentRepository.save(item);
