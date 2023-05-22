@@ -3,7 +3,7 @@ import * as echarts from 'echarts';
 
 const SccaterTimeChart = ({ data}) => {
   const chartRef = useRef(null);
-
+  console.log("j",data);
   useEffect(() => {
     
     const chartInstance = echarts.init(chartRef.current);  

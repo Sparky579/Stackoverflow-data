@@ -12,6 +12,7 @@ import "./App.css"
 import AcceptedAnswers from "./pages/AcceptedAnswers.js";
 import Tags from "./pages/Tags"
 import User from "./pages/User"
+import Andvance from "./pages/Advance"
 
 const { Header, Content, Footer } = Layout;
 
@@ -26,6 +27,7 @@ const App = () => {
             <Menu.Item key="2"><Link to="/accept_answer">Accepted Answers</Link></Menu.Item>
             <Menu.Item key="3"><Link to="/tags">Tags</Link></Menu.Item>
             <Menu.Item key="4"><Link to="/user">User</Link></Menu.Item>
+            <Menu.Item key="5"><Link to="/advance">Advance</Link></Menu.Item>
           </Menu>
         </Header>
         <Content style={{ padding: "0 50px" }}>
@@ -43,6 +45,10 @@ const App = () => {
               <Route exact path="/user">
                 <User/>
               </Route>
+              <Route exact path="/advance">
+                <Andvance/>
+              </Route>
+
             </Switch>
           </div>
         </Content>

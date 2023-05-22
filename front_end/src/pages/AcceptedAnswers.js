@@ -3,6 +3,7 @@ import axios from "axios";
 import ChartPersent from "../componentes/ChartPersent"
 import SccaterTimeChart from "../componentes/SccaterTimeChart"
 import AcceptedLessVotePercentageChart from '../componentes/AcceptedLessVotePercentageChart';
+import Test from "../componentes/Test"
 async function fetchPersent() {
     try {
       const response = await axios.get('http://localhost:8080/java/question/accept-rate');
@@ -74,6 +75,8 @@ export default class AcceptedAnswers extends Component {
           <h3>展示问题从提出到解决 (answer accepted time – question post time) 的时间间隔分布(单位:h):</h3>
           <div>
           <SccaterTimeChart data={accept_interval}/>
+          <h3>展示问题从提出到解决 (answer accepted time – question post time) 的时间间隔分布(单位:天):</h3>
+<Test data={accept_interval}/>
           </div>
           <h3>展示含有 non-accepted answer 的 upvote 数高于 accepted answer 的问题的百分比:</h3>
           <AcceptedLessVotePercentageChart more={acceptedLessVotePercentage}/>
