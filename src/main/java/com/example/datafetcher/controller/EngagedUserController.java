@@ -47,7 +47,7 @@ public class EngagedUserController {
     }
 
     @GetMapping("/user/engage")
-    public Map<Integer, Integer> mergeUserCounts() {
+    public Map<String, Integer> mergeUserCounts() {
         return engagedUserService.mergeUserCounts(getUserAnswerCount(),getUserCommentCount());
     }
 

@@ -62,7 +62,7 @@ public class EngagedUserService {
         return userCommentCount;
     }
 
-    public Map<Integer, Integer> mergeUserCounts(Map<Integer, Integer> answerCountMap, Map<Integer, Integer> commentCountMap) {
+    public Map<String, Integer> mergeUserCounts(Map<Integer, Integer> answerCountMap, Map<Integer, Integer> commentCountMap) {
         Map<Integer, Integer> mergedMap = Stream.of(answerCountMap, commentCountMap)
                 .flatMap(map -> map.entrySet().stream())
                 .collect(Collectors.toMap(
@@ -75,7 +75,7 @@ public class EngagedUserService {
         return mergedMap.entrySet().stream()
                 .sorted(Map.Entry.<Integer, Integer>comparingByValue().reversed())
                 .collect(Collectors.toMap(
-                        Map.Entry::getKey,
+                        entry -> String.format("User %d", entry.getKey()),
                         Map.Entry::getValue,
                         (e1, e2) -> e1,
                         LinkedHashMap::new
