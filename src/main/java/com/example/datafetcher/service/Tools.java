@@ -38,7 +38,9 @@ public class Tools {
         List<Answer> items = answerResponse.getItems();
         for (Answer item : items) {
             Owner owner = item.getOwner();
-            ownerRepository.save(owner);
+            if (ownerRepository.existsById((long) owner.getUserId())){
+                ownerRepository.save(owner);
+            }
             answerRepository.save(item);
         }
     }
@@ -66,7 +68,9 @@ public class Tools {
         for (Comment item : items) {
             Owner owner = item.getOwner();
             item.setQuestion_id(questionId);
-            ownerRepository.save(owner);
+            if (ownerRepository.existsById((long) owner.getUserId())){
+                ownerRepository.save(owner);
+            }
             commentRepository.save(item);
         }
     }

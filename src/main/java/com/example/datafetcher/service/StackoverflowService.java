@@ -187,7 +187,10 @@ public class StackoverflowService {
             // 遍历每个item并获取owner对象
             for (EntityWithOwner item : items) {
                 Owner owner = item.getOwner();
-                ownerRepository.save(owner);
+                //if not exist, save owner
+                if (ownerRepository.findById((long) owner.getUserId()).isEmpty()) {
+                    ownerRepository.save(owner);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
