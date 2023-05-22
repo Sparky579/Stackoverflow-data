@@ -46,9 +46,9 @@ public class AcceptAnswerService {
         int val = 0, all = answeredQuestion.size();
         for (Question q : answeredQuestion) {
             List<Answer> answers = answerRepository.findAnswersByQuestionId(q.getQuestion_id());
-            Optional<Answer> acceptedAnswer = answerRepository.findById((long) q.getQuestion_id());
+            List<Answer> acceptedAnswer = answerRepository.findById(q.getQuestion_id());
             if (acceptedAnswer.isEmpty()) continue;
-            Answer answer = acceptedAnswer.get();
+            Answer answer = acceptedAnswer.get(0);
             Answer answer1 = answers.stream()
                     .max(Comparator.comparing(Answer::getScore)).get();
             if (answer1.getScore() > answer.getScore()) val += 1;

@@ -6,13 +6,11 @@ import com.example.datafetcher.model.Question;
 import com.example.datafetcher.repository.AnswerRepository;
 import com.example.datafetcher.repository.CommentRepository;
 import com.example.datafetcher.repository.QuestionRepository;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 @Service
@@ -65,14 +63,26 @@ public class EngagedUserService {
     }
 
     public Map<Integer, Integer> mergeUserCounts(Map<Integer, Integer> answerCountMap, Map<Integer, Integer> commentCountMap) {
-       return  Stream.of(answerCountMap, commentCountMap)
+        Map<Integer, Integer> mergedMap = Stream.of(answerCountMap, commentCountMap)
                 .flatMap(map -> map.entrySet().stream())
-               .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
-                        Integer::sum
+                        Integer::sum,
+                        LinkedHashMap::new
+                ));
+
+        return mergedMap.entrySet().stream()
+                .sorted(Map.Entry.<Integer, Integer>comparingByValue().reversed())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
                 ));
     }
+
+
+
 
 }

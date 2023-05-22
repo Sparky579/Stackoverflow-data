@@ -4,20 +4,28 @@ import com.example.datafetcher.model.APIs;
 import com.example.datafetcher.repository.APIsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static java.util.Map.Entry.comparingByValue;
 
 @Service
 public class APIService {
 
     static APIsRepository apisRepository;
 
-    public APIService() {
+    @Autowired
+    public APIService(APIsRepository apisRepository0) {
+        if (apisRepository == null) {
+            if (apisRepository0 == null)
+                throw new RuntimeException("apisRepository0 is null");
+            apisRepository = apisRepository0;
+        }
     }
 
     public void logAPI(String apiName) {
@@ -46,7 +54,10 @@ public class APIService {
         for (APIs api : apisList) {
             apisCountMap.put(api.getName(), api.getCount());
         }
+        return apisCountMap.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
-        return apisCountMap;
     }
 }

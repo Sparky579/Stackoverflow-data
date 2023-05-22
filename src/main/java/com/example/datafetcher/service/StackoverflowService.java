@@ -128,7 +128,7 @@ public class StackoverflowService {
     public void autoFetchQuestion(int num, int pageSize) {
         for (int i = 1; i <= num; i++) {
             String questionJson = fetchJavaAnswersURLJson(toQuestionURL("java", "activity", "desc", "stackoverflow", i, pageSize));
-            APIService apiService = new APIService();
+            APIService apiService = new APIService(apisRepository);
             APIService.apisRepository = apisRepository;
             apiService.extractAndCountAPIs(questionJson);
             Tools.saveQuestionResponse(questionJson, questionRepository, questionResponseRepository, ownerRepository);
