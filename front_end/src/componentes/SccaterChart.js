@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 
-const SccaterChart = ({ data}) => {
+const SccaterChart = ({ data,xname,yname}) => {
+  
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -17,14 +18,16 @@ const SccaterChart = ({ data}) => {
       const options =  {
           xAxis: {
             type: 'category',
+            name:xname
 
           },
           yAxis: {
             type: 'value',
+            name:yname
           },
           tooltip: {
             trigger: 'axis',
-            formatter: '问题id: {b} 时间: {c}',
+            formatter: xname+': {b} ' + yname+': {c}',
             axisPointer: {
               type: 'shadow'
             }

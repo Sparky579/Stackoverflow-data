@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 
-const UserEngage = ({ data }) => {
+const UserEngage = ({ data ,xname,yname}) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const UserEngage = ({ data }) => {
       },
       xAxis: {
         type: 'category',
-        name: '用户ID',
+        name: xname,
         axisLabel: { //设置x轴的字
             show:true,
             interval:0,//使x轴横坐标全部显示
@@ -40,7 +40,7 @@ const UserEngage = ({ data }) => {
       },
       yAxis: {
         type: 'value',
-        name: '参与讨论次数',
+        name: yname,
         axisLabel: {
           textStyle: {
             color: '#333'
@@ -54,7 +54,8 @@ const UserEngage = ({ data }) => {
       },
       tooltip: {
         trigger: 'axis',
-        formatter: 'id: {b} 参与次数: {c}',
+        formatter: xname
+        +': {b} '+yname+' : {c}',
         axisPointer: {
           type: 'shadow'
         }

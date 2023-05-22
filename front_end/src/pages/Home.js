@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import ChartComponent from '../componentes/ChartComponent';
 import QustionAnswerChart from '../componentes/QuestionAnswerChart'
 import AnswerDistributionChart from "../componentes/AnswerDistributionChart"
+import Test from "../componentes/Test"
 
 async function fetchDistribution() {
   try {
@@ -114,6 +115,7 @@ export default class Home extends Component {
      <QustionAnswerChart data={data} average={average} max={max}/>
      <h3>展示 answer_count 统计值:</h3>
      <AnswerDistributionChart data={distribution}/>
+     
     </section>
 
     )

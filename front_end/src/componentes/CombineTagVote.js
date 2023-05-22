@@ -54,7 +54,7 @@ const CombineTagVote = ({ data }) => {
       },
       tooltip: {
         trigger: 'axis',
-        formatter: 'Tag组合: {b} Vote个数: {c}',
+        formatter: 'Tag组合: {b} View次数: {c}',
         axisPointer: {
           type: 'shadow'
         }
