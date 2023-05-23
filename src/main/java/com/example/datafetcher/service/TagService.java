@@ -46,7 +46,7 @@ public class TagService {
         Map<String, Integer> sortedResult = result.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
-
+sortedResult.remove("java");
         return sortedResult;
     }
     public Map<String, Integer> getTagView() {
