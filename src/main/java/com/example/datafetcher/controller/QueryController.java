@@ -1,5 +1,6 @@
 package com.example.datafetcher.controller;
 
+import com.example.datafetcher.model.Owner;
 import com.example.datafetcher.model.Question;
 import com.example.datafetcher.service.APIService;
 import com.example.datafetcher.service.QueryService;
@@ -92,7 +93,8 @@ public class QueryController {
             return ResponseEntity.badRequest().body("User id must be a number");
         }
         int id = Integer.parseInt(userId);
-        String json = mapper.writeValueAsString(queryService.findOwnerByUserId(id));
+        List<Owner> list = queryService.findOwnerByUserId(id);
+        String json = mapper.writeValueAsString((list != null && !list.isEmpty()) ? list.get(0) : null);
         return ResponseEntity.ok(json);
     }
 
