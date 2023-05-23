@@ -7,12 +7,11 @@ import com.example.datafetcher.model.Question;
 import com.example.datafetcher.repository.AnswerRepository;
 import com.example.datafetcher.repository.CommentRepository;
 import com.example.datafetcher.repository.QuestionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class QuestionAnswerService {
@@ -65,7 +64,7 @@ public class QuestionAnswerService {
     }
 
 
-    public Map<Integer,Integer> getDistribution(){
+    public Map<Integer, Integer> getDistribution(){
         List<Object[]> temp=questionRepository.findAnswerCountDistribution();
         Map<Integer, Integer> statisticsMap = new HashMap<>();
         for (Object[] result : temp) {

@@ -2,11 +2,11 @@ package com.example.datafetcher.service;
 
 import com.example.datafetcher.model.Question;
 import com.example.datafetcher.repository.QuestionRepository;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
 @Service
 public class TagService {
     @Autowired
@@ -20,8 +20,7 @@ public class TagService {
             for (String tag : q.getTags()) {
                 if (!result.containsKey(tag)) {
                     result.put(tag, 1);
-                }
-                else result.put(tag, result.get(tag) + 1);
+                } else result.put(tag, result.get(tag) + 1);
             }
         }
         Map<String, Integer> sortedResult = result.entrySet().stream()
@@ -72,7 +71,7 @@ sortedResult.remove("java");
     public Map<String, Integer> getTagCombinationVote() {
         List<Question> questions = questionRepository.findAll();
 
-        Map<String, Integer> result=questions.stream()
+        Map<String, Integer> result = questions.stream()
                 .collect(Collectors.groupingBy(
                         question -> {
                             List<String> sortedTags = question.getTags().stream()
@@ -84,7 +83,8 @@ sortedResult.remove("java");
                 ));
         Map<String, Integer> sortedResult = result.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
         return sortedResult;
     }

@@ -1,7 +1,15 @@
 package com.example.datafetcher.service;
+
 import com.example.datafetcher.model.*;
 import com.example.datafetcher.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Objects;
+import java.util.zip.GZIPInputStream;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Objects;
-import java.util.zip.GZIPInputStream;
 
 @Service
 public class StackoverflowService {
@@ -60,7 +60,8 @@ public class StackoverflowService {
         return "https://api.stackexchange.com/2.2/questions?order=" + order + "&sort=" + sort + "&tagged=" + tag + "&site=" + site + "&page=" + page + "&pagesize=" + pageSize + "&filter=withbody";
     }
 
-    String toQuestionAnswerURL(String questionID, String sort, String order, String site, int page, int pageSize) {
+    String toQuestionAnswerURL(String questionID,
+                               String sort, String order, String site, int page, int pageSize) {
         return "https://api.stackexchange.com/2.2/questions/" + questionID + "/answers?order=" + order + "&sort=" + sort + "&site=" + site + "&page=" + page + "&pagesize=" + pageSize;
     }
     String toQuestionCommentURL(String questionID, String sort, String order, String site, int page, int pageSize) {
@@ -76,7 +77,8 @@ public class StackoverflowService {
 
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
-        ResponseEntity<byte[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, byte[].class);
+        ResponseEntity<byte[]> response = restTemplate.exchange(url,
+                HttpMethod.GET, entity, byte[].class);
 
         if (response.hasBody()) {
             try {
@@ -133,7 +135,8 @@ public class StackoverflowService {
             apiService.extractAndCountAPIs(questionJson);
             try
             {
-                Tools.saveQuestionResponse(questionJson, questionRepository, questionResponseRepository, ownerRepository);
+                Tools.saveQuestionResponse(questionJson,
+                        questionRepository, questionResponseRepository, ownerRepository);
             }catch (Exception e){
 //                System.out.println("error");
             }

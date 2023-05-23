@@ -2,17 +2,18 @@ package com.example.datafetcher.service;
 
 import com.example.datafetcher.model.APIs;
 import com.example.datafetcher.repository.APIsRepository;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static java.util.Map.Entry.comparingByValue;
+
 
 @Service
 public class APIService {
