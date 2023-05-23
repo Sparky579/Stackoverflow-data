@@ -8,6 +8,7 @@ import com.example.datafetcher.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -57,8 +58,14 @@ public class AcceptAnswerService {
     }
 
     public List<Long> findAcceptInterval() {
-        List<Question> answeredQuestion = getAnsweredQuestion();
-        return answeredQuestion.stream()
-                .map(question -> question.getLast_activity_date() - question.getCreation_date()).toList();
+        List<Question> answeredQuestion = getAnsweredQuestion()
+                .stream().filter(x -> x.getAccepted_answer_id() > 0).toList();
+        List<Long> result = new ArrayList<>();
+        for (Question q : answeredQuestion) {
+            Answer answer = answerRepository.findById(q.getAccepted_answer_id()).get(0);
+            result.add(answer.getCreation_date() - q.getCreation_date());
+        }
+        result.sort(Comparator.comparingLong(x -> x));
+        return result;
     }
 }

@@ -32,7 +32,7 @@ public class StackoverflowController {
 
     @GetMapping("/auto-fetch-2")
     public String autoFetch2() {
-        stackoverflowService.autoFetchQuestion(1, 50);
+        stackoverflowService.autoFetchQuestion(12, 50);
         return "Auto fetch completed";
     }
 
