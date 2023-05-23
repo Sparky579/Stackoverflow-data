@@ -58,6 +58,7 @@ public class APIService {
         return apisCountMap.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .filter(x -> ! x.getKey().equals("java.version"))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
     }
