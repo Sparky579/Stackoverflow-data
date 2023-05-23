@@ -47,7 +47,7 @@ public class AcceptAnswerService {
         int val = 0, all = answeredQuestion.size();
         for (Question q : answeredQuestion) {
             List<Answer> answers = answerRepository.findAnswersByQuestionId(q.getQuestion_id());
-            List<Answer> acceptedAnswer = answerRepository.findById(q.getQuestion_id());
+            List<Answer> acceptedAnswer = answerRepository.findByAnswer_id(q.getAccepted_answer_id());
             if (acceptedAnswer.isEmpty()) continue;
             Answer answer = acceptedAnswer.get(0);
             Answer answer1 = answers.stream()
@@ -62,7 +62,7 @@ public class AcceptAnswerService {
                 .stream().filter(x -> x.getAccepted_answer_id() > 0).toList();
         List<Long> result = new ArrayList<>();
         for (Question q : answeredQuestion) {
-            Answer answer = answerRepository.findById(q.getAccepted_answer_id()).get(0);
+            Answer answer = answerRepository.findByAnswer_id(q.getAccepted_answer_id()).get(0);
             result.add(answer.getCreation_date() - q.getCreation_date());
         }
         result.sort(Comparator.comparingLong(x -> x));

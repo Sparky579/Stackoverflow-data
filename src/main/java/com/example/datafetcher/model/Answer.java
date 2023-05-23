@@ -29,9 +29,7 @@ public class Answer extends EntityWithOwner{
     private int accept_rate;
     private long last_edit_date;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private int id;
+    private int answer_id;
 
 
     public Answer() {
@@ -127,13 +125,7 @@ public class Answer extends EntityWithOwner{
         this.title = title;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public int getId() {
-        return id;
-    }
 
 
     public String getClosed_reason() {
@@ -161,4 +153,7 @@ public class Answer extends EntityWithOwner{
     }
 
 
+    public int getAnswer_id() {
+        return answer_id;
+    }
 }
