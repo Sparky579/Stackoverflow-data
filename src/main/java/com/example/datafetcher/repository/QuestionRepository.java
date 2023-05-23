@@ -33,5 +33,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT COUNT(q) FROM Question q")
     Integer findTotalQuestionCount();
 
+    List<Question> findByOwnerUserId(int userId);
+
+
 
 }

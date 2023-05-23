@@ -1,8 +1,12 @@
 package com.example.datafetcher.service;
 
 import com.example.datafetcher.model.Answer;
+import com.example.datafetcher.model.Comment;
+import com.example.datafetcher.model.Owner;
 import com.example.datafetcher.model.Question;
 import com.example.datafetcher.repository.AnswerRepository;
+import com.example.datafetcher.repository.CommentRepository;
+import com.example.datafetcher.repository.OwnerRepository;
 import com.example.datafetcher.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,10 @@ public class QueryService {
     private QuestionRepository questionRepository;
     @Autowired
     private AnswerRepository answerRepository;
+    @Autowired
+    private OwnerRepository ownerRepository;
+    @Autowired
+    private CommentRepository commentRepository;
     public List<Question> getQuestionsByTagsAndKey(List<String> tags, String key) {
         List<Question> questionList = (key == null) ?
                 questionRepository.findAll() : questionRepository.findByTitleIgnoreCaseContaining(key);
@@ -32,5 +40,18 @@ public class QueryService {
     }
     public List<Answer> findAnswers(int qid) {
         return answerRepository.findAnswersByQuestionId(qid);
+    }
+    public List<Question> findQuestionsByUserId(int userId) {
+        return questionRepository.findByOwnerUserId(userId);
+    }
+    public List<Owner> findOwnerByUserId(int userId) {
+        return ownerRepository.findByUserId(userId);
+    }
+    public Comment findCommentsByPostId(int postId) {
+        return commentRepository.findByCommentId(postId);
+    }
+    public Comment findCommentsByQuestionId(int userId) {
+        List<Comment> list = commentRepository.findCommentsByQuestionId(userId);
+        return (list == null || list.isEmpty())  ? null : list.get(0);
     }
 }

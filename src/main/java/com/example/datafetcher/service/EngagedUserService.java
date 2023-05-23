@@ -30,12 +30,12 @@ public class EngagedUserService {
     public List<Integer> getQuestionCommentCount() {
         List<Question> questions = questionRepository.findAll();
         return questions.stream().map(question -> commentRepository
-                .findAnswersByQuestionId(question.getQuestion_id()).size()).toList();
+                .findCommentsByQuestionId(question.getQuestion_id()).size()).toList();
     }
     public List<Integer> getQuestionMergeCount() {
         List<Question> questions = questionRepository.findAll();
         return questions.stream().map(question -> commentRepository
-                .findAnswersByQuestionId(question.getQuestion_id()).size()+answerRepository
+                .findCommentsByQuestionId(question.getQuestion_id()).size()+answerRepository
                 .findAnswersByQuestionId(question.getQuestion_id()).size()).toList();
     }
     public Map<Integer, Integer> getUserAnswerCount() {

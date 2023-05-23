@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(value = "SELECT * FROM comment WHERE question_id = :questionId", nativeQuery = true)
-    List<Comment> findAnswersByQuestionId(int questionId);
+    List<Comment> findCommentsByQuestionId(int questionId);
 
+    @Query(value = "SELECT * FROM comment WHERE comment_id = :commentId", nativeQuery = true)
+    Comment findByCommentId(int commentId);
 }

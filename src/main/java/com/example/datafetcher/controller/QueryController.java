@@ -60,5 +60,41 @@ public class QueryController {
         return ResponseEntity.ok(json);
     }
 
+    @GetMapping("/comment")
+    public ResponseEntity<?> getCommentByPostId(
+            @RequestParam("id") String postId
+    ) throws JsonProcessingException {
+        if (!postId.matches("\\d+")) {
+            return ResponseEntity.badRequest().body("Comment id must be a number");
+        }
+        int id = Integer.parseInt(postId);
+        String json = mapper.writeValueAsString(queryService.findCommentsByPostId(id));
+        return ResponseEntity.ok(json);
+    }
+
+    @GetMapping("/comment/question")
+    public ResponseEntity<?> getCommentByQuestionId(
+            @RequestParam("id") String questionId
+    ) throws JsonProcessingException {
+        if (!questionId.matches("\\d+")) {
+            return ResponseEntity.badRequest().body("Question id must be a number");
+        }
+        int id = Integer.parseInt(questionId);
+        String json = mapper.writeValueAsString(queryService.findCommentsByQuestionId(id));
+        return ResponseEntity.ok(json);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<?> getUserById(
+            @RequestParam("id") String userId
+    ) throws JsonProcessingException {
+        if (!userId.matches("\\d+")) {
+            return ResponseEntity.badRequest().body("User id must be a number");
+        }
+        int id = Integer.parseInt(userId);
+        String json = mapper.writeValueAsString(queryService.findOwnerByUserId(id));
+        return ResponseEntity.ok(json);
+    }
+
 
 }
