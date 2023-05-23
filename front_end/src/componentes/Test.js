@@ -29,10 +29,12 @@ const Test = ({ data }) => {
     const options = {
       xAxis: {
         type: 'category',
+        name:'天数',
         data: frequencyData.map((item) => item.value),
       },
       yAxis: {
         type: 'value',
+        name:'问题个数'
       },
       series: [
         {
