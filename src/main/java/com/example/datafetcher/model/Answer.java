@@ -23,9 +23,6 @@ public class Answer extends EntityWithOwner{
     private long creation_date;
     private int question_id;
     private String content_license;
-    private String link;
-    private String title;
-    private String closed_reason;
     private int accept_rate;
     private long last_edit_date;
     @Id
@@ -107,33 +104,6 @@ public class Answer extends EntityWithOwner{
 
     public void setContent_license(String content_license) {
         this.content_license = content_license;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-
-
-
-    public String getClosed_reason() {
-        return closed_reason;
-    }
-
-    public void setClosed_reason(String closed_reason) {
-        this.closed_reason = closed_reason;
     }
 
     public int getAccept_rate() {

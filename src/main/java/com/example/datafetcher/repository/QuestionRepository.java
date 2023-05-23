@@ -26,6 +26,9 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     List<Question> findByTitleIgnoreCaseContaining(String key);
 
+    @Query("SELECT q FROM Question q WHERE q.question_id = ?1")
+    Question findByQuestion_id(int id);
+
 
     @Query("SELECT COUNT(q) FROM Question q")
     Integer findTotalQuestionCount();
