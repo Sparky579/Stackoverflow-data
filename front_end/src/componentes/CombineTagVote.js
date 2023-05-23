@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 
-const CombineTagVote = ({ data }) => {
+const CombineTagVote = ({ data,yname }) => {
   const chartRef = useRef(null);
   
 
@@ -44,7 +44,7 @@ const CombineTagVote = ({ data }) => {
       },
       yAxis: {
         type: 'value',
-        name: 'Vote个数',
+        name: yname+'个数',
         axisLabel: {
           textStyle: {
             color: '#333'
@@ -58,7 +58,7 @@ const CombineTagVote = ({ data }) => {
       },
       tooltip: {
         trigger: 'axis',
-        formatter: 'Tag组合: {b} View次数: {c}',
+        formatter: 'Tag组合: {b} '+yname+'次数: {c}',
         axisPointer: {
           type: 'shadow'
         }

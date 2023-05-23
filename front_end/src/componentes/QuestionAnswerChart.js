@@ -30,7 +30,7 @@ const QuestionAnswerChart = ({ data,average,max}) => {
             markLine: {
               label: {
                 show: true,
-                position: 'start',
+                position: 'end',
                 formatter: '平均值\n'+average,
               },
               lineStyle: {
@@ -53,7 +53,7 @@ const QuestionAnswerChart = ({ data,average,max}) => {
             markLine: {
               label: {
                 show: true,
-                position: 'start',
+                position: 'end',
                 formatter: '最大值\n'+max
               },
               lineStyle: {
@@ -79,7 +79,7 @@ const QuestionAnswerChart = ({ data,average,max}) => {
 
   return (
     
-    <div ref={chartRef} style={{ width: '100%', height: '400px' }}></div>
+    <div ref={chartRef} style={{ width: '100%', height: '500px' }}></div>
   );
 };
 

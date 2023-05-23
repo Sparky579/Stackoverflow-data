@@ -106,12 +106,12 @@ export default class Tags extends Component {
                 <WordCloudChart data={wordCloudChartData}/>
                 <h3>展示哪些 tags 或 tag 的组合得到最多的 upvotes:</h3>
                 <h4>tag 的组合:</h4>
-                <CombineTagVote data={combinevote}/>
+                <CombineTagVote data={combinevote} yname={"upvote"}/ >
                 <h4>tags:</h4>
-                <CombineTagVote data={vote}/>
+                <CombineTagVote data={vote} yname={"upvote"}/>
                 <h3>展示哪些 tags 或 tag 的组合得到最多的 views :</h3>
 
-                <CombineTagVote data={combineview}/>
+                <CombineTagVote data={combineview} yname={"view"}/>
 
 
 
