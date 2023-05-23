@@ -62,8 +62,12 @@ public class AcceptAnswerService {
                 .stream().filter(x -> x.getAccepted_answer_id() > 0).toList();
         List<Long> result = new ArrayList<>();
         for (Question q : answeredQuestion) {
-            Answer answer = answerRepository.findByAnswer_id(q.getAccepted_answer_id()).get(0);
-            result.add(answer.getCreation_date() - q.getCreation_date());
+            try {
+                Answer answer = answerRepository.findByAnswer_id(q.getAccepted_answer_id()).get(0);
+                result.add(answer.getCreation_date() - q.getCreation_date());
+            }catch(Exception e){
+
+            }
         }
         result.sort(Comparator.comparingLong(x -> x));
         return result;
