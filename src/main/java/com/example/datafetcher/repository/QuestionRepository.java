@@ -22,8 +22,13 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT COUNT(q) FROM Question q WHERE q.accepted_answer_id > 0")
     Integer findAcceptedAnswerCount();
 
+    List<Question> findByTagsContaining(String tag);
+
+    List<Question> findByTitleIgnoreCaseContaining(String key);
+
 
     @Query("SELECT COUNT(q) FROM Question q")
     Integer findTotalQuestionCount();
+
 
 }
